@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver">
+		</property>
+		<property name="url" value="jdbc:mysql://localhost:3306/photosystem">
+		</property>
+		<property name="username" value="root"></property>
+		<property name="password" value="root"></property>
+	</bean>
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">
+					org.hibernate.dialect.MySQLDialect
+				</prop>
+			</props>
+		</property>
+		<property name="mappingResources">
+			<list>
+				<value>com/dzxc/entity/Album/Album.hbm.xml</value>
+				<value>com/dzxc/entity/Kind/Kind.hbm.xml</value>
+				<value>com/dzxc/entity/Photo/Photo.hbm.xml</value>
+				<value>
+					com/dzxc/entity/Photoword/Photoword.hbm.xml
+				</value>
+				<value>com/dzxc/entity/User/User.hbm.xml</value>
+				<value>
+					com/dzxc/entity/Dictionary/DQuestion.hbm.xml
+				</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 主要数据层注入 -->
+	<bean id="AlbumDAO" class="com.dzxc.dao.impl.AlbumDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="KindDAO" class="com.dzxc.dao.impl.KindDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="PhotoDAO" class="com.dzxc.dao.impl.PhotoDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="PhotowordDAO" class="com.dzxc.dao.impl.PhotowordDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="UserDAO" class="com.dzxc.dao.impl.UserDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+	<bean id="DQuestionDAO" class="com.dzxc.dao.impl.DQuestionDAO">
+		<property name="sessionFactory">
+			<ref bean="sessionFactory" />
+		</property>
+	</bean>
+
+	<!-- 注入基础服务业务 -->
+	<bean name="baseService" class="com.dzxc.base.service.BaseService">
+		<property name="albumDAO">
+			<ref bean="AlbumDAO" />
+		</property>
+		<property name="kindDAO">
+			<ref bean="KindDAO" />
+		</property>
+		<property name="photoDAO">
+			<ref bean="PhotoDAO" />
+		</property>
+		<property name="photowordDAO">
+			<ref bean="PhotowordDAO" />
+		</property>
+		<property name="userDAO">
+			<ref bean="UserDAO" />
+		</property>
+		<property name="dQuestionDAO">
+			<ref bean="DQuestionDAO" />
+		</property>
+	</bean>
+
+	<!-- 注入业务 -->
+	<bean id="userService" class="com.dzxc.service.impl.UserServiceImpl">
+		<property name="userDAO">
+			<ref bean="UserDAO" />
+		</property>
+	</bean>
+	<bean id="dictionaryService" class="com.dzxc.service.impl.DictionaryServiceImpl">
+		<property name="dQuestionDAO">
+			<ref bean="DQuestionDAO" />
+		</property>
+	</bean>
+	<bean id="albumService" class="com.dzxc.service.impl.AlbumServiceImpl">
+		<property name="albumDAO">
+			<ref bean="AlbumDAO" />
+		</property>
+		<property name="kindDAO">
+			<ref bean="KindDAO" />
+		</property>
+		<property name="userDAO">
+			<ref bean="UserDAO" />
+		</property>
+	</bean>
+	<bean id="photoService" class="com.dzxc.service.impl.PhotoServiceImpl">
+		<property name="photoDAO">
+			<ref bean="PhotoDAO" />
+		</property>
+		<property name="photowordDAO">
+			<ref bean="PhotowordDAO" />
+		</property>
+		<property name="albumDAO">
+			<ref bean="AlbumDAO" />
+		</property>
+		<property name="userDAO">
+			<ref bean="UserDAO" />
+		</property>
+	</bean>
+</beans>

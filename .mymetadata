@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="dzxcProject"
+  id="myeclipse.1335149344606"
+  context-root="/dzxcProject"
+  j2ee-spec="6.0"
+  archive="dzxcProject.war">
+  <attributes>
+    <attribute name="webrootdir" value="WebRoot" />
+  </attributes>
+</project-module>
+
